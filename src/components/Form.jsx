@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Form = () => {
+const Form = ({ setSearchingLyric }) => {
 
     const [search, setSearch] = useState({
         artist: '',
@@ -30,6 +30,8 @@ const Form = () => {
 
         setError(false);
 
+        setSearchingLyric(search);
+
     }
 
     return (
@@ -41,7 +43,7 @@ const Form = () => {
                     ? <p className="alert alert-danger text-center p-2">All fields are require.</p>
                     : null
                 }
-                
+
                 <div className="row">
 
                     <form
