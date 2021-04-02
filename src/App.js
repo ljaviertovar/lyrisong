@@ -3,11 +3,13 @@ import axios from 'axios';
 
 import Form from './components/Form';
 import Lyric from './components/Lyric';
+import Artist from './components/Artist';
 
 function App() {
 
   const [searchingLyric, setSearchingLyric] = useState({});
   const [lyric, setLyric] = useState('');
+  const [artistInfo, setArtistInfo] = useState({});
 
   useEffect(() => {
 
@@ -17,10 +19,15 @@ function App() {
 
       const { artist, song } = searchingLyric;
       const url = `https://api.lyrics.ovh/v1/${artist}/${song}`;
+      const url2 = `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${artist}`;
 
-      const resultLyric = await axios.get(url);
+      const [resultLyric, resultArtist] = await Promise.all([
+        axios.get(url),
+        axios.get(url2),
+      ]);
 
       setLyric(resultLyric.data.lyrics);
+      setArtistInfo(resultArtist.data.artists[0]);
 
     }
 
@@ -37,7 +44,9 @@ function App() {
       <div className="container mt-5">
         <div className="row">
           <div className="col-md-6">
-
+            <Artist
+              artistInfo={artistInfo}
+            />
           </div>
           <div className="col-md-6">
             <Lyric
